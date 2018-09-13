@@ -1,6 +1,7 @@
 package com.phone.orders.core;
 
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,7 +22,8 @@ public class PhoneService {
     @Value("${phone.service.url}")
     private String phoneServicePriceHost;
 
-    private final RestTemplate restTemplate;
+    @Setter
+    private RestTemplate restTemplate;
 
     public List<PhonePrice> getPhonePrices(final Set<Long> ids) {
 
@@ -49,7 +51,7 @@ public class PhoneService {
     private void throwIfNoSomePhonesWasNotFound(final Set<Long> ids, final Set<Long> foundedIds) {
 
         final Set<Long> missedPhones = ids.stream()
-                .filter(foundedIds::contains)
+                .filter(id -> !foundedIds.contains(id))
                 .collect(Collectors.toSet());
 
         if (CollectionUtils.isNotEmpty(missedPhones)) {
