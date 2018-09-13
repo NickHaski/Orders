@@ -30,7 +30,7 @@ import java.util.UUID;
 public class OrderEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "NAME")
@@ -52,7 +52,7 @@ public class OrderEntity {
     @Enumerated(EnumType.STRING)
     private Currency currency;
 
-    @Column(name = "STATUS")
+    @Column(name = "ORDER_STATUS")
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
 

@@ -13,7 +13,7 @@ def profiles = 'local'
 defaultTasks "bootRun"
 
 bootRun {
-    addResources = true
+    sourceResources sourceSets.main
 }
 
 processResources {

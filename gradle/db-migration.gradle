@@ -1,0 +1,18 @@
+task prefixNewMigrations {
+    description 'Create timestamp prefix for new flyway migration files.'
+    fileTree(dir: 'src/main/resources/db/migration').exclude({ isFilePrefixed(it.file) }).each { file ->
+        doLast {
+            def timestamp = new Date().format('yyyyMMddHHmmssSSS', TimeZone.getTimeZone('GMT'))
+            println "Renaming $file.name to ${timestamp}__$file.name"
+            file.renameTo("$file.parentFile.absolutePath$file.separator${timestamp}__$file.name")
+            // Sleep for a moment to avoid prefix conflicts when renaming multiple files
+            sleep(1*1000)
+        }
+    }
+}
+
+static def isFilePrefixed(file) {
+    return (file.name ==~ '^\\d+__.*\\.sql\$')
+}
+
+compileJava.finalizedBy prefixNewMigrations

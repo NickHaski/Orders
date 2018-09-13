@@ -1,0 +1,27 @@
+apply plugin: "org.unbroken-dome.test-sets"
+
+testSets {
+    integrationTest { dirName = 'integration-test' }
+}
+
+project.integrationTest {
+    outputs.upToDateWhen { false }
+}
+
+//Ensure that the check task fails the build if there are failing integration tests.
+//check.dependsOn integrationTest
+//Ensure that our unit tests are run before our integration tests
+integrationTest.mustRunAfter test
+
+//Ensure that the HTML reports of unit and integration tests are written to different directories.
+tasks.withType(Test) {
+    reports.html.destination = file("${reporting.baseDir}/${name}")
+}
+
+dependencies {
+    integrationTestCompile("org.springframework.boot:spring-boot-starter-test") {
+        exclude group: 'com.vaadin.external.google', module: 'android-json'
+    }
+    integrationTestCompile "org.testcontainers:testcontainers"
+
+}

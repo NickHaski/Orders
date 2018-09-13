@@ -27,7 +27,7 @@ import javax.persistence.Table;
 public class PhoneOrderEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "PHONE_ID")
